@@ -118,6 +118,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>feather</string>
+				<string>featherneo</string>
 			</array>
 		</dict>
 	</array>

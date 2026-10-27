@@ -50,7 +50,8 @@ struct FeatherApp: App {
 	}
 	
 	private func _handleURL(_ url: URL) {
-		if url.scheme == "feather" {
+		/// featherneo:// is the fork's own scheme; feather:// is kept so existing links still work
+		if url.scheme == "feather" || url.scheme == "featherneo" {
 			/// feather://import-certificate?p12=<base64>&mobileprovision=<base64>&password=<base64>
 			if url.host == "import-certificate" {
 				guard
