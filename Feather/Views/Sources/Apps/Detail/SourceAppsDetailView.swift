@@ -18,7 +18,8 @@ struct SourceAppsDetailView: View {
 	@State var cancellable: AnyCancellable? // Combine
 	@State private var _isScreenshotPreviewPresented: Bool = false
 	@State private var _selectedScreenshotIndex: Int = 0
-	
+	@State private var _screenshotsWidth: CGFloat = 0
+
 	var currentDownload: Download? {
 		downloadManager.getDownload(by: app.currentUniqueId)
 	}
@@ -315,7 +316,7 @@ extension SourceAppsDetailView {
 								.resizable()
 								.aspectRatio(contentMode: .fit)
 								.frame(
-									maxWidth: UIScreen.main.bounds.width - 32,
+									maxWidth: _screenshotsWidth > 0 ? _screenshotsWidth - 32 : nil,
 									maxHeight: 400
 								)
 								.clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
@@ -335,6 +336,12 @@ extension SourceAppsDetailView {
 			.compatScrollTargetLayout()
 		}
 		.compatScrollTargetBehavior()
+		// window width, not screen width: they differ on iPhone Duo and in Split View
+		.onGeometryChange(for: CGFloat.self) { geometry in
+			geometry.size.width
+		} action: {
+			_screenshotsWidth = $0
+		}
 		.padding(.horizontal, -16)
 	}
 }

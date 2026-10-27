@@ -72,6 +72,7 @@ struct ExtendedTabbarView: View {
 			.hidden(horizontalSizeClass == .compact)
 		}
 		.tabViewStyle(.sidebarAdaptable)
+		.compatDefaultSidebarPlacement()
 		.tabViewCustomization($customization)
 		.sheet(isPresented: $_isAddingPresenting) {
 			SourcesAddView()
@@ -102,6 +103,19 @@ struct ExtendedTabbarView: View {
 	
 	var standardIcon: some View {
 		Image(systemName: "app.dashed")
+	}
+}
+
+// MARK: - Extension: View
+extension View {
+	/// Shows the sidebar by default in regular width, such as the iPhone Duo's inner display
+	@ViewBuilder
+	fileprivate func compatDefaultSidebarPlacement() -> some View {
+		if #available(iOS 27.0, *) {
+			self.defaultTabBarPlacement(.sidebar)
+		} else {
+			self
+		}
 	}
 }
 

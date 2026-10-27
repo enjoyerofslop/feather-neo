@@ -42,7 +42,9 @@ struct ResetView: View {
 			UIApplication.shared.suspendAndReopen()
 		}
 		
-		let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad
+		// in regular width (iPad, iPhone Duo inner display) an action sheet
+		// becomes a popover, which needs an anchor we don't have
+		let style: UIAlertController.Style = UIApplication.topViewController()?.traitCollection.horizontalSizeClass == .regular
 			? .alert
 			: .actionSheet
 		
